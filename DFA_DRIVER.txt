@@ -1,0 +1,305 @@
+1. Implement DFA Driver for following language L= 全et of all strings that starts and end with same letter over {a,b}
+
+2. Implement DFA Driver for following language L= 全et of all strings that starts with a, ends with b and having substring bbc over {a,b,c}
+
+3. Implement DFA Driver for following language L= 全et of all strings that containing 101 over {0,1}20.
+
+4. Implement DFA Driver for following language L= 全et of all strings that starts with 00,ending with 11 over {0,1,2}
+
+
+
+================================================
+
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+
+int stat[10],tran[20][20],finalstate[20];
+int nextstate,fs,ips,init,i,j,k,m;
+char sym[10],ch,str[10],a[10];
+
+void state(void);
+void symbol(void);
+void transition(void);
+void initial(void);
+void final(void);
+void run(void);
+void display(void);
+
+int main()
+{
+    char choice;
+    do
+    {
+        printf("\n A:ADD:add new machine");
+        printf("\n R:RUN:execute a machine");
+        printf("\n T:TYPE:show stored DFA");
+        printf("\n Q:QUIT:quit simulator");
+        printf("\n Enter the choice:");
+        scanf("%s",&choice);
+        switch(tolower(choice))
+        {
+          
+            case 'a' : state();
+                   symbol();
+                   transition();
+                   initial();
+                   final();
+                   break;
+            
+            case 'r' : run();
+                   break;
+          
+            case 't' : display();
+                   break;
+            
+            case 'q' : exit(0);
+                   break;
+        }
+    }
+    while(choice!='q');
+    return 0;
+}
+
+void state()
+{
+    printf("\n Enter the number of states:");
+    scanf("%d",&ips);
+    for(i=0;i<ips;i++)
+    {
+        printf("\n Give %d state:q",i+1);
+        scanf("%d",&stat[i]);
+    }
+}
+
+void symbol()
+{
+    printf("\n Give the number of input symbols:");
+    scanf("%d",&m);
+    for(i=0;i<m;i++)
+    {
+        printf("\n Give symbol number %d",i+1);
+        scanf("%s",&sym[i]);
+    }
+}
+
+void transition()
+{
+    printf("\n Give transition by specifying state number");
+    for(i=0;i<ips;i++)
+    {
+        for(j=0;j<m;j++)
+        {
+            printf("\n trnsition from q[%d] over symbol %c is to state :q",i,sym[j]);
+            scanf("%d",&tran[i][j]);
+        }
+    }
+}
+
+void initial()
+{
+    printf("\n Give initial state:q");
+    scanf("%d",&init);
+}
+
+void final()
+{
+    printf("\n Give number of final states:");
+    scanf("%d",&fs);
+    for(i=0;i<fs;i++)
+    {
+        printf("\n Give  number of final states:q%d",i+1);
+        scanf("%d",&finalstate[i]);
+    }
+}
+
+void run()
+{
+    int tag=0;
+    do{
+        printf("\n Entert the input string:");
+        scanf("%s",&str);
+        i=init;
+        for(k=0;k<strlen(str);k++)
+        {
+            for(j=0;j<m;j++)
+            {
+                if(str[k]==sym[j])
+                    break;
+            }
+            nextstate=tran[i][j];
+            i=nextstate;
+        }
+        for(j=0;j<fs;j++)
+        {
+            if(i==finalstate[j])
+                tag=1;
+        }
+        if(tag==1)
+        {
+            printf("\n Given string is accepted");
+            tag=0;
+        }
+        else
+        {  
+            printf("\n Given string is rejected");
+            tag=0;
+        }
+        printf("\n Doyou want to continue?(y/n):");
+        scanf("%s",&ch);
+    }
+    while(ch!='n');
+}
+
+void display()
+{
+    printf("\n The nDFA is as given below");
+    printf("\n Q={");
+    for(i=0;i<ips;i++)
+    {
+        printf("q[%d],",stat[i]);
+    }
+    printf("}");
+    printf("\n inp Symbols={");
+    for(i=0;i<m;i++)
+    {
+        printf("%c,",sym[i]);
+    }
+    printf("}");
+    printf("\n F={");
+    for(i=0;i<fs;i++)
+    {
+        printf("q[%d]",finalstate[i]);
+    }
+    printf("}");
+    printf("\n initial state={q[%d]}",init);
+    printf("\n transition function \n");
+    printf("\n\t %c",235);
+    for(i=0;i<m;i++)
+        printf("\t %c",sym[i]);
+    printf("\n");
+
+    for(i=0;i<ips;i++)
+    {
+        printf("\t q[%d]",stat[i]);
+        for(j=0;j<m;j++)
+        {
+            printf("\t q[%d]",tran[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+
+
+
+=====================================================================
+Consider The DFA For
+
+Design a DFA Having exactly 2 symbols over {a,b}.
+
+Draw DFA and Transition table for above example and give it as input to the program.
+
+See
+
+
+
+ramdas@NRClasses:~/TYBCS_2016/DFA$ ./a.out
+
+ A:ADD:add new machine
+ R:RUN:execute a machine
+ T:TYPE:show stored DFA
+ Q:QUIT:quit simulator
+ Enter the choice:a
+
+ Enter the number of states:4
+
+ Give 1 state:q0
+
+ Give 2 state:q1
+
+ Give 3 state:q2
+
+ Give 4 state:q3
+
+ Give the number of input symbols:2
+
+ Give symbol number 1a
+
+ Give symbol number 2b
+
+ Give transition by specifying state number
+ trnsition from q[0] over symbol a is to state :q1
+
+ trnsition from q[0] over symbol b is to state :q1
+
+ trnsition from q[1] over symbol a is to state :q2
+
+ trnsition from q[1] over symbol b is to state :q2
+
+ trnsition from q[2] over symbol a is to state :q3
+
+ trnsition from q[2] over symbol b is to state :q3
+
+ trnsition from q[3] over symbol a is to state :q3
+
+ trnsition from q[3] over symbol b is to state :q3
+
+ Give initial state:q0
+
+ Give number of final states:1
+
+ Give  number of final states:q12
+
+ A:ADD:add new machine
+ R:RUN:execute a machine
+ T:TYPE:show stored DFA
+ Q:QUIT:quit simulator
+ Enter the choice:t
+
+ The nDFA is as given below
+ Q={q[0],q[1],q[2],q[3],}
+ inp Symbols={a,b,}
+ F={q[2]}
+ initial state={q[0]}
+ transition function
+
+         ?       a       b
+         q[0]    q[1]    q[1]
+         q[1]    q[2]    q[2]
+         q[2]    q[3]    q[3]
+         q[3]    q[3]    q[3]
+
+ A:ADD:add new machine
+ R:RUN:execute a machine
+ T:TYPE:show stored DFA
+ Q:QUIT:quit simulator
+ Enter the choice:r
+
+ Entert the input string:ab
+
+ Given string is accepted
+ Doyou want to continue?(y/n):n
+
+ A:ADD:add new machine
+ R:RUN:execute a machine
+ T:TYPE:show stored DFA
+ Q:QUIT:quit simulator
+ Enter the choice:r
+
+ Entert the input string:ba
+
+ Given string is accepted
+ Doyou want to continue?(y/n):y
+
+ Entert the input string:abb
+
+ Given string is rejected
+ Doyou want to continue?(y/n):n      
+
+ A:ADD:add new machine
+ R:RUN:execute a machine
+ T:TYPE:show stored DFA
+ Q:QUIT:quit simulator
+ Enter the choice:q
+jagdaleswapnil04@gmail.com:~/mcs_2019/DFA$
